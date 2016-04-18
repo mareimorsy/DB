@@ -20,7 +20,7 @@ class DB
 		$this->_connect = new PDO("mysql:host=".self::HOST.";dbname=".self::DB.";charset=utf8", self::USER, self::PASSWORD);
 	}
 
-	public function getInstance()
+	public static function getInstance()
 	{
 		if (!self::$_instance) {
 			self::$_instance = new DB();
