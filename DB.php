@@ -791,7 +791,7 @@ class MareiCollection implements ArrayAccess{
 
 
       public function getItem($key) {
-          return $this->items[$key];
+          return isset($this->$key) ? $this->$key : null;
       }
 
       public function __toString() {
