@@ -1,5 +1,5 @@
-# Welcome to Marei's DB class wiki!
-DB class is a simple query builder class in PHP to increase your productivity, you can't imagine how much time you're gonna save if you're using this class! .
+# Welcome to Marei's DB class V 1.0
+MareiDB class is a simple query builder class in PHP to increase your productivity, you can't imagine how much time you're gonna save if you're using this class! .
 ## Features
 * Totally Secured :
 This DB class uses PDO prepared statements to provide high levels of protection against SQL Injection attacks
@@ -9,12 +9,24 @@ The syntax is really simple, and there are many ways to do the same query, so yo
 Everything you wanna know about this class is here and organized very well, so you can find it easily.
 
 ## Usage
-After downloading the class extract it into your root directory and then open it to adjust the default settings like Host, DB name, DB user and DB password.
+After downloading the class from [here](https://raw.githubusercontent.com/mareimorsy/DB/master/DB.php) save it into your root directory and then open it to adjust the basic configurations for your DB connection like host, database name, DB username and DB password. And also you can easily define your current development environment to `development` or `production`.
 ```php
-	const HOST = 'localhost';
-	const USER = 'root';
-	const PASSWORD = '';
-	const DB = 'mydb';
+//current development environment
+"env" => "development",
+//Localhost
+"development" => [
+					"host" => "localhost",
+					"database" => "test",
+					"username" => "root",
+					"password" => ""
+				 ],
+//Server
+"production"  => [
+					"host" => "",
+					"database" => "",
+					"username" => "",
+					"password" => ""
+				 ]
 ```
 To use the class, just include it into your project files like this
 ```php
@@ -105,6 +117,19 @@ SQL Query :
 ```sql
 UPDATE `mytable` SET `first_name` = ?, `last_name` = ?, `age` = ? WHERE `mytable`.`age` > ?
 ```
+you can also do the same query by only 2 items in the array like this :
+```php
+$db->update('mytable',
+	[ 
+		'first_name' => 'Ahmed',
+		'last_name' => 'Mansour',
+		'age'	=> 27
+	],['age >= ',22]);
+```
+SQL Query :
+```sql
+UPDATE `mytable` SET `first_name` = ?, `last_name` = ?, `age` = ? WHERE age >= ?
+```
 but, what if we wanna add more than one where condition?
 ####passing more than one where condition
 You can pass an array of arrays(nested array) as a third parameter to `update()` method, each array holds three items : the column name as a string, the operator and the value. The second and the third items are optional, so you can pass only the id as an array, or you can pass an array of two items : the column name and the value. And here is some examples of passing an array : 
@@ -147,6 +172,7 @@ SQL Query :
 ```sql
 UPDATE `mytable` SET `first_name` = ?, `last_name` = ?, `age` = ? WHERE `mytable`.`age` >= ? AND `mytable`.`id` = ?
 ```
+Or you can do `[ ['age >= ', 18], [1] ]` to get the same result.
 ### Another way to update using `where()` method
 `where()` method holds three parameters the second and the third are optional, if you passed only one parameter, the `where()` method will understand that there's a field called id and you wanna update the table where its id equals to that parameter like this : 
 ```php
@@ -203,6 +229,23 @@ SQL Query :
 ```sql
 UPDATE `mytable` SET `first_name` = ?, `last_name` = ?, `age` = ? WHERE `mytable`.`age` <= ? OR `mytable`.`id` = ?
 ```
+And also you can pass an array of where clauses to `where()` or `orWhere()` method like this :
+```php
+->where([ ['first_name', 'Marei'], ['age >=', 18], [1] ])->exec();
+```
+SQL would be like this :
+```sql
+WHERE `first_name` = ? AND age >= ? AND id = ?
+```
+You can also use a combination of `where()` and `orWhere()` methods whith single caluse or with a group of where clauses like this :
+```php
+->where([ ['first_name', 'Marei'], ['age >=', 18]])->where(1)->orWhere([ [5], ['last_name', 'Morsy'] ])->exec();
+```
+SQL would be like this :
+```sql
+WHERE `first_name` = ? AND age >= ? AND `id` = ? OR `id` = ? Or `last_name` = ?
+```
+As you notice that you can use `where()` and `orWhere()` not only with `upadte()` method, but also with other query methods such as `delete()`, `update()` and `table()`.
 ###Delete values from table
 use `delete()` method to delete rows from table, it holds 2 parameters, the first one is table name and the second one is optional, it acts exactly like the third parameter in `update()` method so, you can pass only the id as integer value, you can pass an array of the field name and the value, you can pass an array of the field name and parameter and value, you can pass an array of arrays of where clauses. And here are some examples of how to use `delete()` method : 
 ####Example 1 : 
@@ -263,10 +306,10 @@ SQL Query :
 ```sql
 SELECT * FROM `mytable`
 ```
-it returns an associative array of arrays, each array represents a row of the table, so you can use `foreach` to loop throw `$rows` array and get each row separately like this : 
+It returns a collection called "MareiCollection" you can think of it like an array of objects, each object represents a row of the table, so you can use `foreach` to loop throw `$rows` array and get each row separately like this : 
  ```php
 foreach ($rows as $row) {
-	echo " {$row['first_name']} - {$row['last_name']} <br>";
+	echo " $rowfirst_name - $row->last_name <br>";
 }
 ```
 Output : 
@@ -276,6 +319,59 @@ Marei - Morsy
 Mohammed - Gharib 
 Ahmed - Hendy 
 ```
+and you can apply methods on "MareiCollection" like `first()`, `last()`, `toArray()`, `toJSON()` and `getItem()` like this :
+ ```php
+$users = $db->table("users")->get()->toArray();
+```
+To get users as an array
+```php
+$users = $db->table("users")->get()->toJSON();
+echo $users;
+```
+To get users as JSON and if you just echo the result, Marei DB class is smart enough to understand that you want to return a JSON, so you can get the same result in one single line like this :
+```php
+echo $db->table("users")->get();
+```
+To print users table as JSON
+```php
+echo $db->table("users")->get()->first();
+```
+To print the first row at users table as JSON
+```php
+echo $db->table("users")->get()->last();
+```
+To print the last row at users table as JSON
+```php
+echo $db->table("users")->get()->first()->first_name;
+```
+To print the first name of the first user, you can also do it like this :
+```php
+$first_user = $db->table("users")->get()->first();
+echo $first_user->first_name;
+```
+Or you can do it like this :
+```php
+$first_user = $db->table("users")->get()->first()->toArray();
+echo $first_user['first_name'];
+```
+If you want to get a specific row from `MareiCollection` use `getItem()` method and pass the item key like this :
+```php
+echo $db->table("users")->get()->getItem(0);
+```
+print the first row at users table as JSON
+#### `Qget()` Method :
+`Qget()` method works exactly like get method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `getItem()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
+```php
+$users = $db->table("users")->Qget();
+foreach ($users as $user) {
+	echo $user->first_name;
+}
+```
+To print the result of `Qget()` as JSON just use `json_encode($Qget_result);` like this :
+```php
+$users = $db->table("users")->Qget();
+echo json_encode($users);
+``` 
 #### `select()` Method : 
 If you want to select a specific column(s) use `select()` method, it holds column names as a string parameter separated by `,` like this : 
 ```php
@@ -323,6 +419,11 @@ Array
 )
 ```
 It will return an associative array of useful information you might need to know like the current, previous, next and last page. And if there's no previous or next page its value would be null.
+#### `Qpaginate()` Method :
+`Qpaginate()` method works exactly like `paginate()` method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `getItem()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
+```php
+$rows = $db->table('mytable')->paginate(2, 5);
+```
 ####Using `where()` and `orWhere()` with selection : 
 You can use `where()` or `orWhere()` methods with selection like this : 
 ```php
@@ -339,7 +440,7 @@ echo $db->getCount();
 ```
 ###Using Raw Queries : 
 I bet that you asked what if I wanted to execute more complected queries?
-that's why I created `query()` method, it holds two parameters the first one is SQL query as a string, and the second one is the values that you wanna pass to query as an array. And here is how you can use `query()` method : 
+that's why I created `query()` method, it holds three parameters the first one is SQL query as a string, and the second one is optional and it's for the values that you wanna pass to query as an array. And here is how you can use `query()` method : 
 ```php
 $sql = "SELECT * FROM mytable WHERE id = ?";
 $rows = $db->query($sql, [1]);
@@ -347,4 +448,9 @@ $rows = $db->query($sql, [1]);
 SQL Query :
 ```sql
 SELECT * FROM mytable WHERE id = 1
+```
+if you want to get rid of all `MareiCollection` functionally just pass true as a third parameter like this :
+```php
+$sql = "SELECT * FROM mytable WHERE id = ?";
+$rows = $db->query($sql, [1], true);
 ```
