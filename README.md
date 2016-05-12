@@ -309,7 +309,7 @@ SELECT * FROM `mytable`
 It returns a collection called "MareiCollection" you can think of it like an array of objects, each object represents a row of the table, so you can use `foreach` to loop throw `$rows` array and get each row separately like this : 
  ```php
 foreach ($rows as $row) {
-	echo " $rowfirst_name - $row->last_name <br>";
+	echo "$row->first_name <br>";
 }
 ```
 Output : 
