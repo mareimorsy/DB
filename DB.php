@@ -2,7 +2,7 @@
 //====================== Marei DB Class V 1.0 ======================
 $db_config = [
 	//current development environment
-	"env" => "development",
+	"env" => "production",
 	//Localhost
 	"development" => [
 						"host" => "localhost",
@@ -35,7 +35,7 @@ class DB{
 		if ($db_config['env'] == "development") {
 			$config = $db_config['development'];
 		}elseif ($db_config['env'] == "production") {
-			$config = $db_config['development'];
+			$config = $db_config['production'];
 		}else{
 			die("Environment must be either 'development' or 'production'.");
 		}
