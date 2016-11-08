@@ -354,7 +354,7 @@ Or you can do it like this :
 $first_user = $db->table("users")->get()->first()->toArray();
 echo $first_user['first_name'];
 ```
-If you want to get a specific row from `MareiCollection` use `getItem()` method and pass the item key like this :
+If you want to get a specific row from `MareiCollection` use `item()` method and pass the item key like this :
 ```php
 echo $db->table("users")->get()->item(0);
 ```
@@ -420,7 +420,7 @@ Array
 ```
 It will return an associative array of useful information you might need to know like the current, previous, next and last page. And if there's no previous or next page its value would be null.
 #### `Qpaginate()` Method :
-`Qpaginate()` method works exactly like `paginate()` method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `getItem()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
+`Qpaginate()` method works exactly like `paginate()` method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `item()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
 ```php
 $rows = $db->table('mytable')->paginate(2, 5);
 ```
