@@ -319,7 +319,7 @@ Marei - Morsy
 Mohammed - Gharib 
 Ahmed - Hendy 
 ```
-and you can apply methods on "MareiCollection" like `first()`, `last()`, `toArray()`, `toJSON()` and `getItem()` like this :
+and you can apply methods on "MareiCollection" like `first()`, `last()`, `toArray()`, `toJSON()` and `item()` like this :
  ```php
 $users = $db->table("users")->get()->toArray();
 ```
@@ -356,11 +356,11 @@ echo $first_user['first_name'];
 ```
 If you want to get a specific row from `MareiCollection` use `getItem()` method and pass the item key like this :
 ```php
-echo $db->table("users")->get()->getItem(0);
+echo $db->table("users")->get()->item(0);
 ```
 print the first row at users table as JSON
 #### `Qget()` Method :
-`Qget()` method works exactly like get method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `getItem()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
+`Qget()` method works exactly like get method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `item()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
 ```php
 $users = $db->table("users")->Qget();
 foreach ($users as $user) {
