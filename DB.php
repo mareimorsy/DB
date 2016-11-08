@@ -2,7 +2,7 @@
 //====================== Marei DB Class V 1.0 ======================
 $db_config = [
 	//current development environment
-	"env" => "production",
+	"env" => "development",
 	//Localhost
 	"development" => [
 						"host" => "localhost",
@@ -342,7 +342,7 @@ class DB{
 
 		// call_user_method_array('where_orWhere', $this, func_get_args());
 		//Call to undefined function call_user_method_array()
-
+		//echo print_r(func_num_args());
 		$num_args = func_num_args();
 		$args = func_get_args();
 		if ($num_args == 1) {
@@ -727,14 +727,14 @@ class DB{
 //Start Marei Object Class
 class MareiObj{
 
-	public function toJSON()
+    public function toJSON()
     {
-    	return json_encode($this);
+        return json_encode($this);
     }
 
     public function toArray()
     {
-    	return (array) $this;
+        return (array) $this;
     }
 
     public function __toString() {
@@ -754,12 +754,13 @@ class MareiCollection implements ArrayAccess{
 
        public function toJSON()
        {
-           return json_encode(get_object_vars($this));
+           return json_encode($this->toArray());
        }
 
        public function toArray()
        {
-           // return (array) get_object_vars($this);
+        // return (array) get_object_vars($this);
+        $array = [];
         foreach ($this as  $mareiObj) {
           $array[] = (array) $mareiObj;
         }
@@ -790,7 +791,7 @@ class MareiCollection implements ArrayAccess{
        }
 
 
-      public function getItem($key) {
+      public function item($key) {
           return isset($this->$key) ? $this->$key : null;
       }
 
