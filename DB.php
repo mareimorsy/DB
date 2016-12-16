@@ -729,7 +729,7 @@ class MareiObj{
 
     public function toJSON()
     {
-        return json_encode($this);
+        return json_encode($this, JSON_NUMERIC_CHECK);
     }
 
     public function toArray()
@@ -739,7 +739,7 @@ class MareiObj{
 
     public function __toString() {
         header("Content-Type: application/json;charset=utf-8");
-        return json_encode($this);
+        return json_encode($this, JSON_NUMERIC_CHECK);
     }
     
 }
@@ -754,7 +754,7 @@ class MareiCollection implements ArrayAccess{
 
        public function toJSON()
        {
-           return json_encode($this->toArray());
+           return json_encode($this->toArray(), JSON_NUMERIC_CHECK);
        }
 
        public function toArray()
