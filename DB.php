@@ -127,7 +127,7 @@ class DB{
 		
 		if (isset($id)) {
 			// if there is an ID
-			if (is_integer($id)) {
+			if (is_numeric($id)) {
 				$this->sql .= " WHERE `id` = ?";
 				$this->bindValues[] = $id;
 			// if there is an Array
@@ -212,7 +212,7 @@ class DB{
 		
 		if (isset($id)) {
 			// if there is an ID
-			if (is_integer($id)) {
+			if (is_numeric($id)) {
 				$this->sql .= " WHERE `id` = ?";
 				$this->bindValues[] = $id;
 			// if there is an Array
@@ -346,7 +346,7 @@ class DB{
 		$num_args = func_num_args();
 		$args = func_get_args();
 		if ($num_args == 1) {
-			if (is_integer($args[0])) {
+			if (is_numeric($args[0])) {
 				$this->where .= "`id` = ?";
 				$this->bindValues[] =  $args[0];
 			}elseif (is_array($args[0])) {
@@ -436,7 +436,7 @@ class DB{
 		$num_args = func_num_args();
 		$args = func_get_args();
 		if ($num_args == 1) {
-			if (is_integer($args[0])) {
+			if (is_numeric($args[0])) {
 				$this->where .= "`id` = ?";
 				$this->bindValues[] =  $args[0];
 			}elseif (is_array($args[0])) {
