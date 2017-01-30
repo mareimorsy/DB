@@ -767,6 +767,15 @@ class MareiCollection implements ArrayAccess{
            return $array;
        }
 
+       public function list($field)
+       {
+	       	$list = [];
+	       	foreach ($this as  $item) {
+	       	  $list[] = $item->{$field};
+	       	}
+	       	return $list;
+       }
+
        public function first($offset=0)
        {
            return isset($this->$offset) ? $this->$offset : null;
@@ -774,7 +783,7 @@ class MareiCollection implements ArrayAccess{
 
        public function last($offset=null)
        {
-           $offset = count($this);
+           $offset = count($this->toArray())-1;
            return isset($this->$offset) ? $this->$offset : null;
        }
 
