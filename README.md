@@ -319,7 +319,7 @@ Marei - Morsy
 Mohammed - Gharib 
 Ahmed - Hendy 
 ```
-and you can apply methods on "MareiCollection" like `first()`, `last()`, `toArray()`, `toJSON()` and `item()` like this :
+and you can apply methods on "MareiCollection" like `first()`, `last()`, `toArray()`, `toJSON()`, `item()` and `list()` like this :
  ```php
 $users = $db->table("users")->get()->toArray();
 ```
@@ -358,7 +358,12 @@ If you want to get a specific row from `MareiCollection` use `item()` method and
 ```php
 echo $db->table("users")->get()->item(0);
 ```
-print the first row at users table as JSON
+
+If you want to get a specific column of `MareiCollection`, like if you want firebase users' token as an array, use `list()` method and pass the column name like this :
+```php
+print_r( $db->table("users")->get()->list('token') );
+```
+print all tokens in the users table as an array
 #### `Qget()` Method :
 `Qget()` method works exactly like get method but without all `MareiCollecton` functionality like print the result as JSON and other methods like `toArray()`, `toJSON()`, `first()`, `last()` and `item()`. if you really care about performance `Qget()` is what you need to use. And you can use it like this :
 ```php
