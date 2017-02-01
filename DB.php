@@ -23,7 +23,7 @@ class DB{
 	private static $instance = null;
 	private $dbh = null, $table, $columns, $sql, $bindValues, $getSQL,
 	$where, $orWhere, $whereCount=0, $isOrWhere = false,
-	$rowCount=0, $limit, $lastIDInserted = 0;
+	$rowCount=0, $limit, $orderBy, $lastIDInserted = 0;
 
 	// Initial values for pagination array
 	private $pagination = ['previousPage' => null,'currentPage' => 1,'nextPage' => null,'lastPage' => null, 'totalRows' => null];
@@ -110,6 +110,7 @@ class DB{
 		$this->sql = null;
 		$this->bindValues = null;
 		$this->limit = null;
+		$this->orderBy = null;
 		$this->getSQL = null;
 		$this->where = null;
 		$this->orWhere = null;
@@ -564,6 +565,10 @@ class DB{
 			$this->sql .= $this->where;
 		}
 
+		if ($this->orderBy !== null) {
+			$this->sql .= $this->orderBy;
+		}
+
 		if ($this->limit !== null) {
 			$this->sql .= $this->limit;
 		}
@@ -575,6 +580,31 @@ class DB{
 			$this->limit = " LIMIT {$limit}";
 		}else{
 			$this->limit = " LIMIT {$limit} OFFSET {$offset}";
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Sort result in a particular order according to a column name
+	 * @param  string $field_name The column name which you want to order the result according to.
+	 * @param  string $order      it determins in which order you wanna view your results whether 'ASC' or 'DESC'.
+	 * @return object             it returns DB object
+	 */
+	public function orderBy($field_name, $order = 'ASC')
+	{
+		$field_name = trim($field_name);
+
+		$order =  trim(strtoupper($order));
+
+		// validate it's not empty and have a proper valuse
+		if ($field_name !== null && ($order == 'ASC' || $order == 'DESC')) {
+			if ($this->orderBy ==null ) {
+				$this->orderBy = " ORDER BY $field_name $order";
+			}else{
+				$this->orderBy .= ", $field_name $order";
+			}
+			
 		}
 
 		return $this;
