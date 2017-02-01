@@ -358,6 +358,7 @@ If you want to get a specific row from `MareiCollection` use `item()` method and
 ```php
 echo $db->table("users")->get()->item(0);
 ```
+print the first row at users table as JSON
 
 If you want to get a specific column of `MareiCollection`, like if you want firebase users' token as an array, use `list()` method and pass the column name like this :
 ```php
@@ -438,6 +439,20 @@ SQL Query :
 ```sql
 SELECT * FROM `mytable` WHERE `mytable`.`id` = ?
 ```
+####Order the result set
+you can use `orderBy()` method to order the result set by a column name, `orderBy($column_name, $order)` takes two parameters, the first one is the column name as string and the second one is optional and it takes only two values `ASC` which is the default value to order the result set by asccending order, or `DESC` to order the result set by descending order like this :
+```php
+$rows = $db->table('mytable')->orderBy('id', 'DESC')->get();
+```
+To order the result set in descending order by id.
+And you can use more than orderBy together like this :
+```php
+$rows = $db->table('mytable')
+           ->orderBy('id', 'DESC')
+	   ->orderBy('age', 'ASC')
+	   ->get();
+```
+and ofcourse as you use `orderBy()` with `get()`, you can also use it with `paginate()`, `limit()`, `Qget()` and `Qpaginate()` methods.
 ####Count selected rows
 Use `getCount()` method to get the total number of rows returned of the last query. and you can use it after selection like this : 
 ```php
