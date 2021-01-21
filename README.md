@@ -248,7 +248,7 @@ WHERE `first_name` = ? AND age >= ? AND `id` = ? OR `id` = ? Or `last_name` = ?
 As you notice that you can use `where()` and `orWhere()` not only with `upadte()` method, but also with other query methods such as `delete()`, `update()` and `table()`.
 ###Delete values from table
 use `delete()` method to delete rows from table, it holds 2 parameters, the first one is table name and the second one is optional, it acts exactly like the third parameter in `update()` method so, you can pass only the id as integer value, you can pass an array of the field name and the value, you can pass an array of the field name and parameter and value, you can pass an array of arrays of where clauses. And here are some examples of how to use `delete()` method : 
-####Example 1 : 
+#### Example 1 : 
 ```php
 $db->delete('mytable',1);
 ```
@@ -256,7 +256,7 @@ SQL Query :
 ```sql
 DELETE FROM `mytable` WHERE `mytable`.`id` = ?
 ```
-####Example 2 : 
+#### Example 2 : 
 ```php
 $db->delete('mytable', ['first_name', 'Marei']);
 ```
@@ -264,7 +264,7 @@ SQL Query :
 ```sql
 DELETE FROM `mytable` WHERE `mytable`.`first_name` = ?
 ```
-####Example 3 : 
+#### Example 3 : 
 ```php
 $db->delete('mytable', ['age', '<', 18]);
 ```
@@ -272,7 +272,7 @@ SQL Query :
 ```sql
 DELETE FROM `mytable` WHERE `mytable`.`age` < ?
 ```
-####Example 4 : 
+#### Example 4 : 
 ```php
 $db->delete('mytable', [ ['age', '<', 18], [1] ]);
 ```
