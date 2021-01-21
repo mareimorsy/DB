@@ -797,7 +797,7 @@ class MareiCollection implements ArrayAccess{
            return $array;
        }
 
-       public function list($field)
+       public function lists($field)
        {
 	       	$list = [];
 	       	foreach ($this as  $item) {
